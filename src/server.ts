@@ -1,4 +1,5 @@
 import express from 'express';
+import {Application, Request, Response, NextFunction, Errback} from "express";
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
@@ -28,19 +29,15 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
-  app.get('/filteredimage', async (req, res) => {
-    const image_url = req.query.image_url;
-    if (image_url) {
-      filterImageFromURL(image_url)
-      .then(response => {
-        res.sendFile(response);
-        res.on('finish', () => deleteLocalFiles([response]))
-      })
-    }
-    else {
-      res.status(404).send("Please send the correct image_url");
-    }
-  })
+  app.get('/filteredimage', 
+    async (req: Request, res: Response, next: NextFunction) => {
+      try {
+          let absolutePath: string = await filterImageFromURL(req.query.image_url) as string;
+          return res.status(200).sendFile(absolutePath);
+      } catch (e) {
+          return next(e);
+      }
+  });
 
   //! END @TODO1
   
