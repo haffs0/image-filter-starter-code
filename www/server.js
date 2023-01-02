@@ -35,17 +35,13 @@ const util_1 = require("./util/util");
     // RETURNS
     //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
     /**************************************************************************** */
-    app.get('/filteredimage', (req, res) => __awaiter(this, void 0, void 0, function* () {
-        const image_url = req.query.image_url;
-        if (image_url) {
-            util_1.filterImageFromURL(image_url)
-                .then(response => {
-                res.sendFile(response);
-                res.on('finish', () => util_1.deleteLocalFiles([response]));
-            });
+    app.get('/filteredimage', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+        try {
+            let absolutePath = yield util_1.filterImageFromURL(req.query.image_url);
+            return res.status(200).sendFile(absolutePath);
         }
-        else {
-            res.status(404).send("Please send the correct image_url");
+        catch (e) {
+            return next(e);
         }
     }));
     //! END @TODO1
