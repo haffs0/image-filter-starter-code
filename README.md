@@ -47,4 +47,4 @@ Prevent requests without valid authentication headers.
 Add your own domain name and have it point to the running services (try adding a subdomain name to point to the processing server)
 > !NOTE: Domain names are not included in AWS’ free tier and will incur a cost.
 ### github repo url
-[Image Filter Repo](https://github.com/haffs0/image-filter-starter-code)
+[Image Filter Repo url](https://github.com/haffs0/image-filter-starter-code)
